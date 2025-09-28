@@ -19,7 +19,7 @@
             this.btnHowToPlay = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // label1 (Título)
+            // label1 (Title)
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Bold);

@@ -10,22 +10,26 @@ namespace MemoryBattle
         {
             InitializeComponent();
         }
-
-        //test comment
-
         private void btnSinglePlayer_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Starting Single Player...");
-        }
+            FormSinglePlayerMenu menu = new FormSinglePlayerMenu();
 
-        private void btnBattleMode_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Starting Battle Mode...");
+            if (menu.ShowDialog() == DialogResult.OK)
+            {
+                // Start the game with chosen difficulty
+                FormGame game = new FormGame(menu.SelectedDifficulty);
+                game.Show();
+            }
         }
 
         private void btnScoreInfo_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Scores will be displayed here.");
+        }
+
+        private void btnBattleMode_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Battle mode will be displayed here.");
         }
 
         private void btnHowToPlay_Click(object sender, EventArgs e)
