@@ -37,6 +37,7 @@
             this.btnHardest = new System.Windows.Forms.Button();
             this.btnPro = new System.Windows.Forms.Button();
             this.btnProgressive = new System.Windows.Forms.Button();
+            this.btnExit = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnEasy
@@ -99,11 +100,22 @@
             this.btnProgressive.UseVisualStyleBackColor = true;
             this.btnProgressive.Click += new System.EventHandler(this.btnProgressive_Click);
             // 
+            // btnExit
+            // 
+            this.btnExit.Location = new System.Drawing.Point(50, 326);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(200, 40);
+            this.btnExit.TabIndex = 6;
+            this.btnExit.Text = "Exit";
+            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            // 
             // FormSinglePlayerMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(300, 340);
+            this.ClientSize = new System.Drawing.Size(300, 378);
+            this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnProgressive);
             this.Controls.Add(this.btnPro);
             this.Controls.Add(this.btnHardest);
@@ -117,8 +129,11 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Select Difficulty";
             this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.Button btnExit;
     }
 }
