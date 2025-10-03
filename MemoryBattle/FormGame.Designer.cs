@@ -25,8 +25,9 @@
             this.ClientSize = new System.Drawing.Size(800, 600);
             this.Name = "FormGame";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Memory Battle - Game";
+            this.Text = " ";
             this.ResumeLayout(false);
+
         }
         #endregion
     }

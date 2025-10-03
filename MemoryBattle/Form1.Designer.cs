@@ -1,4 +1,6 @@
-﻿namespace MemoryBattle
+﻿using MemoryBattle.Details;
+
+namespace MemoryBattle
 //Test comment 2
 {
     partial class Form1

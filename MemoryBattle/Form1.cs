@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
+
+using MemoryBattle.Details;using System.Windows.Forms;
 //TestpushGitHub
 namespace MemoryBattle
 {
@@ -12,13 +12,18 @@ namespace MemoryBattle
         }
         private void btnSinglePlayer_Click(object sender, EventArgs e)
         {
-            FormSinglePlayerMenu menu = new FormSinglePlayerMenu();
-
-            if (menu.ShowDialog() == DialogResult.OK)
+            using (var menu = new FormSinglePlayerMenu())
             {
-                // Start the game with chosen difficulty
-                FormGame game = new FormGame(menu.SelectedDifficulty);
-                game.Show();
+                if (menu.ShowDialog(this) != DialogResult.OK) return;
+
+                var settings = DifficultySlides.For(menu.SelectedDifficulty); //Difficulty will be coming from GameSettings
+
+                using (var game = new FormGame(settings))  //pass GameSettings
+                {
+                    Hide(); 
+                    game.ShowDialog(this); 
+                    Show();                 
+                }
             }
         }
 

@@ -46,6 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Details\Board.cs" />
+    <Compile Include="Details\Cards\MemoryCard.cs" />
+    <Compile Include="Details\Difficulty.cs" />
+    <Compile Include="Details\Engine.cs" />
+    <Compile Include="Details\GameSettings.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -68,6 +73,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormGame.resx">
+      <DependentUpon>FormGame.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormSinglePlayerMenu.resx">
       <DependentUpon>FormSinglePlayerMenu.cs</DependentUpon>
@@ -94,5 +102,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

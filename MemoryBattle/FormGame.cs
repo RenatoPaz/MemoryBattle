@@ -6,22 +6,24 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MemoryBattle.Details;
+
 using System.Windows.Forms;
 
 namespace MemoryBattle
 {
     public partial class FormGame : Form
     {
-        private FormSinglePlayerMenu.Difficulty difficulty;
+        private readonly GameSettings _settings;
 
-        public FormGame(FormSinglePlayerMenu.Difficulty selectedDifficulty)
+        public FormGame(GameSettings settings)
         {
-            InitializeComponent(); // <-- defined in the Designer partial
-            difficulty = selectedDifficulty;
+            InitializeComponent();
+            _settings = settings;
 
-            // For now, just show which mode was selected
-            this.Text = "Memory Battle - " + difficulty.ToString();
-            MessageBox.Show("Starting game in " + difficulty.ToString() + " mode!");
+            Text = $"Memory Battle — {_settings.Rows}x{_settings.Columns}";
+            // TODO: create your engine/grid here using _settings
+            // _engine = new GameEngine(_settings, ThemeValues.Get(_settings.Logo));
         }
     }
 }
