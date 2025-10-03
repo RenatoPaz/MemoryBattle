@@ -1,7 +1,7 @@
 ﻿using System;
+using MemoryBattle.Details;
+using System.Windows.Forms;
 
-using MemoryBattle.Details;using System.Windows.Forms;
-//TestpushGitHub
 namespace MemoryBattle
 {
     public partial class Form1 : Form

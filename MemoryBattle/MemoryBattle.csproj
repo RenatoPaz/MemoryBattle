@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Details\Board.cs" />
+    <Compile Include="Details\Cards\CardManager.cs" />
     <Compile Include="Details\Cards\MemoryCard.cs" />
     <Compile Include="Details\Difficulty.cs" />
     <Compile Include="Details\Engine.cs" />
