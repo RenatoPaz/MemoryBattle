@@ -42,78 +42,93 @@
             // 
             // btnEasy
             // 
+            this.btnEasy.BackColor = System.Drawing.Color.RosyBrown;
+            this.btnEasy.Font = new System.Drawing.Font("Cascadia Code", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEasy.Location = new System.Drawing.Point(50, 20);
             this.btnEasy.Name = "btnEasy";
             this.btnEasy.Size = new System.Drawing.Size(200, 40);
             this.btnEasy.TabIndex = 0;
             this.btnEasy.Text = "Easy";
-            this.btnEasy.UseVisualStyleBackColor = true;
+            this.btnEasy.UseVisualStyleBackColor = false;
             this.btnEasy.Click += new System.EventHandler(this.btnEasy_Click);
             // 
             // btnMedium
             // 
+            this.btnMedium.BackColor = System.Drawing.Color.RosyBrown;
+            this.btnMedium.Font = new System.Drawing.Font("Cascadia Code", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMedium.Location = new System.Drawing.Point(50, 70);
             this.btnMedium.Name = "btnMedium";
             this.btnMedium.Size = new System.Drawing.Size(200, 40);
             this.btnMedium.TabIndex = 1;
             this.btnMedium.Text = "Medium";
-            this.btnMedium.UseVisualStyleBackColor = true;
+            this.btnMedium.UseVisualStyleBackColor = false;
             this.btnMedium.Click += new System.EventHandler(this.btnMedium_Click);
             // 
             // btnHard
             // 
+            this.btnHard.BackColor = System.Drawing.Color.RosyBrown;
+            this.btnHard.Font = new System.Drawing.Font("Cascadia Code", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnHard.Location = new System.Drawing.Point(50, 120);
             this.btnHard.Name = "btnHard";
             this.btnHard.Size = new System.Drawing.Size(200, 40);
             this.btnHard.TabIndex = 2;
             this.btnHard.Text = "Hard";
-            this.btnHard.UseVisualStyleBackColor = true;
+            this.btnHard.UseVisualStyleBackColor = false;
             this.btnHard.Click += new System.EventHandler(this.btnHard_Click);
             // 
             // btnHardest
             // 
+            this.btnHardest.BackColor = System.Drawing.Color.RosyBrown;
+            this.btnHardest.Font = new System.Drawing.Font("Cascadia Code", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnHardest.Location = new System.Drawing.Point(50, 170);
             this.btnHardest.Name = "btnHardest";
             this.btnHardest.Size = new System.Drawing.Size(200, 40);
             this.btnHardest.TabIndex = 3;
             this.btnHardest.Text = "Hardest";
-            this.btnHardest.UseVisualStyleBackColor = true;
+            this.btnHardest.UseVisualStyleBackColor = false;
             this.btnHardest.Click += new System.EventHandler(this.btnHardest_Click);
             // 
             // btnPro
             // 
+            this.btnPro.BackColor = System.Drawing.Color.RosyBrown;
+            this.btnPro.Font = new System.Drawing.Font("Cascadia Code", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPro.Location = new System.Drawing.Point(50, 220);
             this.btnPro.Name = "btnPro";
             this.btnPro.Size = new System.Drawing.Size(200, 40);
             this.btnPro.TabIndex = 4;
             this.btnPro.Text = "Pro";
-            this.btnPro.UseVisualStyleBackColor = true;
+            this.btnPro.UseVisualStyleBackColor = false;
             this.btnPro.Click += new System.EventHandler(this.btnPro_Click);
             // 
             // btnProgressive
             // 
+            this.btnProgressive.BackColor = System.Drawing.Color.RosyBrown;
+            this.btnProgressive.Font = new System.Drawing.Font("Cascadia Code", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnProgressive.Location = new System.Drawing.Point(50, 270);
             this.btnProgressive.Name = "btnProgressive";
             this.btnProgressive.Size = new System.Drawing.Size(200, 40);
             this.btnProgressive.TabIndex = 5;
             this.btnProgressive.Text = "Progressive Mode";
-            this.btnProgressive.UseVisualStyleBackColor = true;
+            this.btnProgressive.UseVisualStyleBackColor = false;
             this.btnProgressive.Click += new System.EventHandler(this.btnProgressive_Click);
             // 
             // btnExit
             // 
+            this.btnExit.BackColor = System.Drawing.Color.RosyBrown;
+            this.btnExit.Font = new System.Drawing.Font("Cascadia Code", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExit.Location = new System.Drawing.Point(50, 326);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(200, 40);
             this.btnExit.TabIndex = 6;
             this.btnExit.Text = "Exit";
-            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.UseVisualStyleBackColor = false;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
             // FormSinglePlayerMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = global::MemoryBattle.Properties.Resources.FallSeasonImage;
             this.ClientSize = new System.Drawing.Size(300, 378);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnProgressive);
