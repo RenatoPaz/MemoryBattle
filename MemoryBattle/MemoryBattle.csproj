@@ -64,6 +64,12 @@
     <Compile Include="FormGame.Designer.cs">
       <DependentUpon>FormGame.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormHowToPlay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormHowToPlay.Designer.cs">
+      <DependentUpon>FormHowToPlay.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormSinglePlayerMenu.cs">
       <SubType>Form</SubType>
     </Compile>
