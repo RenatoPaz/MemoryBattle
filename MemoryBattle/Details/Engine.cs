@@ -95,9 +95,11 @@ namespace MemoryBattle.Details
                 case Difficulty.Medium:
                     return 14; // Medium font for symbols
                 case Difficulty.Hard:
+                    return 14;
                 case Difficulty.Hardest:
                     return 14;
                 case Difficulty.Pro:
+                    return 24;
                 case Difficulty.Progressive:
                     return 14;
                 default:
