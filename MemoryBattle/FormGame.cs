@@ -74,7 +74,12 @@ namespace MemoryBattle
             {
                 card.CardButton.Click += CardButton_Click;
                 this.Controls.Add(card.CardButton);
+
+                card.CardButton.BringToFront();
             }
+
+            pictureBox1.SendToBack();
+            pictureBox2.SendToBack();
         }
 
         private void CardButton_Click(object sender, EventArgs e)
