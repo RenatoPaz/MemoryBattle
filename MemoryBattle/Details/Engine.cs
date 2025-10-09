@@ -18,11 +18,17 @@ namespace MemoryBattle.Details
             _difficulty = difficulty;
         }
 
+        //public int GetTotalPairs()
+        //{
+        //    return (_settings.Rows * _settings.Columns) / 2;
+        //}
         public int GetTotalPairs()
         {
-            return (_settings.Rows * _settings.Columns) / 2;
+            int totalCells = _settings.Rows * _settings.Columns;
+            return totalCells / 2;
         }
 
+        private readonly Random _rng = new Random();
         public string[] GetSymbolsForDifficulty()
         {
             switch (_difficulty)
@@ -37,7 +43,7 @@ namespace MemoryBattle.Details
 
                 case Difficulty.Hard:
                     // Similar looking symbols - harder to distinguish
-                    return new string[] { "◐", "◑", "◒", "◓", "◔", "◕", "◖", "◗", "◘", "◙", "◚", "◛" };
+                    return new string[] { "◐", "◑", "◒", "◓", "◔", "◕", "◖", "◗", "◘", "◙", "◚", "◛", "⚡", "☂", "✈", "⚽", "♨" };
 
                 case Difficulty.Hardest:
                     // Mathematical and special symbols - very similar
@@ -60,28 +66,39 @@ namespace MemoryBattle.Details
         {
             var symbols = GetSymbolsForDifficulty();
             var cardValues = new List<string>();
+
+            int totalCells = _settings.Rows * _settings.Columns;
             int totalPairs = GetTotalPairs();
 
-            // Add pairs of symbols
+            //Implementing error handlign to catch if the symbols are not enough for the pairs
+            if (totalPairs > symbols.Length)
+                throw new InvalidOperationException(
+                    $"Not enough symbols for difficulty {_difficulty}. Need {totalPairs}, have {symbols.Length}.");
+
+            //Add normal pairs
             for (int i = 0; i < totalPairs; i++)
             {
                 cardValues.Add(symbols[i]);
                 cardValues.Add(symbols[i]);
             }
 
-            // Shuffle using your original algorithm
+            //If the board has an odd number of cells, add one extra card
+            //(duplicates one of the existing symbols so you'll have a triple)
+            if (totalCells % 2 != 0)
+            {
+                string duplicate = symbols[_rng.Next(totalPairs)];
+                cardValues.Add(duplicate);
+            }
+
             return ShuffleCards(cardValues);
         }
 
         private List<string> ShuffleCards(List<string> cards)
         {
-            Random random = new Random();
             for (int i = cards.Count - 1; i > 0; i--)
             {
-                int j = random.Next(i + 1);
-                string temp = cards[i];
-                cards[i] = cards[j];
-                cards[j] = temp;
+                int j = _rng.Next(i + 1);
+                (cards[i], cards[j]) = (cards[j], cards[i]);
             }
             return cards;
         }
