@@ -25,7 +25,7 @@ namespace MemoryBattle.Details
                 case Difficulty.Medium:
                     return new GameSettings(rows: 2, columns: 4, timer: 60, matchReward: 1, logo: "icons", cardWidth: cardWidth, cardHeight: cardHeight, spacing: spacing);
                 case Difficulty.Hard:
-                    return new GameSettings(rows: 3, columns: 5, timer: 60, matchReward: 1, logo: "icons", cardWidth: cardWidth, cardHeight: cardHeight, spacing: spacing);
+                    return new GameSettings(rows: 3, columns: 4, timer: 60, matchReward: 1, logo: "icons", cardWidth: cardWidth, cardHeight: cardHeight, spacing: spacing);
                 case Difficulty.Hardest:
                     return new GameSettings(rows: 3, columns: 6, timer: 60, matchReward: 1, logo: "icons", cardWidth: cardWidth, cardHeight: cardHeight, spacing: spacing);
                 case Difficulty.Pro:

@@ -24,6 +24,11 @@ namespace MemoryBattle
         private int _matchedPairs = 0;
         private int _totalPairs;
 
+
+        // Progressive Mode fields
+        private bool _isProgressiveMode = false;
+        private Difficulty _currentLevel;
+
         public FormGame(GameSettings settings)
         {
             InitializeComponent();
