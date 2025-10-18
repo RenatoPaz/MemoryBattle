@@ -70,6 +70,12 @@
     <Compile Include="FormHowToPlay.Designer.cs">
       <DependentUpon>FormHowToPlay.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormProgressiveMode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormProgressiveMode.Designer.cs">
+      <DependentUpon>FormProgressiveMode.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormSinglePlayerMenu.cs">
       <SubType>Form</SubType>
     </Compile>

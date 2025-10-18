@@ -26,31 +26,33 @@ namespace MemoryBattle
             //    }
             //}
 
-            using (var menu = new FormSinglePlayerMenu())
-            {
-                if (menu.ShowDialog(this) != DialogResult.OK) return;
+            //using (var menu = new FormSinglePlayerMenu())
+            //{
+            //    if (menu.ShowDialog(this) != DialogResult.OK) return;
 
-                var settings = DifficultySlides.For(menu.SelectedDifficulty); // Difficulty will be coming from GameSettings
+            //    var settings = DifficultySlides.For(menu.SelectedDifficulty); // Difficulty will be coming from GameSettings
 
-                FormGame game;
+            //    FormGame game;
 
-                // ✅ If player selected Progressive mode, mark it explicitly
-                if (menu.SelectedDifficulty == Difficulty.Progressive)
-                {
-                    game = new FormGame(settings)
-                    {
-                        Tag = "Progressive"
-                    };
-                }
-                else
-                {
-                    game = new FormGame(settings);
-                }
+            //    // ✅ If player selected Progressive mode, mark it explicitly
+            //    if (menu.SelectedDifficulty == Difficulty.Progressive)
+            //    {
+            //        game = new FormGame(settings)
+            //        {
+            //            Tag = "Progressive"
+            //        };
+            //    }
+            //    else
+            //    {
+            //        game = new FormGame(settings);
+            //    }
 
-                Hide();
-                game.ShowDialog(this);
-                Show();
-            }
+            //    Hide();
+            //    game.ShowDialog(this);
+            //    Show();
+            //}
+
+
         }
 
         private void btnScoreInfo_Click(object sender, EventArgs e)

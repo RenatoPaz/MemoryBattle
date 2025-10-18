@@ -8,6 +8,7 @@ using System.Windows.Forms.VisualStyles;
 
 namespace MemoryBattle.Details
 {
+
     public sealed class GameSettings
     {
         public int Rows { get; private set; }
@@ -24,6 +25,7 @@ namespace MemoryBattle.Details
         public GameSettings()
             : this(rows: 3, columns: 3, timer: 60, matchReward: 1, logo: "icons", cardWidth: 80, cardHeight: 80, spacing: 10)
         { }
+
 
         public GameSettings(int rows, int columns, int timer, int matchReward, string logo, int cardWidth = 80, int cardHeight = 80, int spacing = 10)
         {
