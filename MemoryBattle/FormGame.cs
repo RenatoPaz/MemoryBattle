@@ -14,8 +14,6 @@ namespace MemoryBattle
 {
     public partial class FormGame : Form
     {
-        private readonly GameSettings _settings;
-        private readonly Difficulty _difficulty;
         private readonly GameEngine _engine;
         private readonly CardManager _cardManager;
         private List<MemoryCard> _memoryCards;
@@ -24,29 +22,13 @@ namespace MemoryBattle
         private int _matchedPairs = 0;
         private int _totalPairs;
 
-
-        // Progressive Mode fields
-        private bool _isProgressiveMode = false;
-        private Difficulty _currentLevel;
-
         public FormGame(GameSettings settings)
         {
             InitializeComponent();
-            _settings = settings;
 
-            // Determine difficulty from GameSettings.cs
-            _difficulty = GetDifficultyFromSettings(settings);
-            _engine = new GameEngine(settings, _difficulty);
+            Difficulty difficulty = GetDifficultyFromSettings(settings);
+            _engine = new GameEngine(settings, difficulty);
             _cardManager = new CardManager(settings);
-
-            this.Text = $"Memory Battle - {_settings.Rows}x{_settings.Columns}";
-
-            // Set fixed window size
-            this.Size = new Size(800, 650);
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.WindowState = FormWindowState.Normal;
-            this.MaximizeBox = false;
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
 
             InitializeGame();
         }
@@ -55,10 +37,9 @@ namespace MemoryBattle
         {
             if (settings.Rows == 2 && settings.Columns == 3) return Difficulty.Easy;
             if (settings.Rows == 2 && settings.Columns == 4) return Difficulty.Medium;
-            if (settings.Rows == 3 && settings.Columns == 5) return Difficulty.Hard;
+            if (settings.Rows == 3 && settings.Columns == 4) return Difficulty.Hard;
             if (settings.Rows == 3 && settings.Columns == 6) return Difficulty.Hardest;
             if (settings.Rows == 4 && settings.Columns == 7) return Difficulty.Pro;
-            if (settings.Rows == 5 && settings.Columns == 10) return Difficulty.Progressive;
             return Difficulty.Easy;
         }
 
@@ -79,7 +60,6 @@ namespace MemoryBattle
             {
                 card.CardButton.Click += CardButton_Click;
                 this.Controls.Add(card.CardButton);
-
                 card.CardButton.BringToFront();
             }
 

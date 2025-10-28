@@ -18,10 +18,6 @@ namespace MemoryBattle.Details
             _difficulty = difficulty;
         }
 
-        //public int GetTotalPairs()
-        //{
-        //    return (_settings.Rows * _settings.Columns) / 2;
-        //}
         public int GetTotalPairs()
         {
             int totalCells = _settings.Rows * _settings.Columns;
@@ -52,10 +48,6 @@ namespace MemoryBattle.Details
                 case Difficulty.Pro:
                     // Complex Unicode characters - extremely challenging
                     return new string[] { "ᄀ", "ᄁ", "ᄂ", "ᄃ", "ᄄ", "ᄅ", "ᄆ", "ᄇ", "ᄈ", "ᄉ", "ᄊ", "ᄋ", "ᄌ", "ᄍ", "ᄎ", "ᄏ", "ᄐ", "ᄑ", "ᄒ", "ᄓ" };
-
-                case Difficulty.Progressive:
-                    // Use existing settings but with simple symbols for now
-                    return new string[] { "●", "■", "▲", "♦", "★", "♥", "◆", "▼", "○", "□", "△", "◇", "☆", "♡", "◈", "▽", "●", "■", "▲", "♦", "★", "♥", "◆", "▼", "○", "□", "△", "◇", "☆", "♡", "◈", "▽", "◐", "◑", "◒", "◓", "◔", "◕", "◖", "◗", "◘", "◙", "◚", "◛", "◝", "◞", "◟", "◠", "◡", "◢", "◣", "◤" };
 
                 default:
                     return new string[] { "●", "■", "▲", "♦", "★", "♥", "◆", "▼" };
@@ -117,8 +109,6 @@ namespace MemoryBattle.Details
                     return 14;
                 case Difficulty.Pro:
                     return 24;
-                case Difficulty.Progressive:
-                    return 14;
                 default:
                     return 12;
             }
