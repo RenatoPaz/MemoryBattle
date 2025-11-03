@@ -35,7 +35,12 @@ namespace MemoryBattle
 
         private void btnBattleMode_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Battle mode will be displayed here.");
+            using (var battleMenu = new FormBattleModeMenu())
+            {
+                Hide();
+                battleMenu.ShowDialog(this);
+                Show();
+            }
         }
 
         private void btnHowToPlay_Click(object sender, EventArgs e)

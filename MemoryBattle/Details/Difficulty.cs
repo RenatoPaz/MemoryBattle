@@ -8,7 +8,8 @@ using System.Windows.Forms;
 namespace MemoryBattle.Details
 {
     //Holds the difficulty logic for the game, and will be connected for the difficulty for different game modess
-    public enum Difficulty { Easy, Medium, Hard, Hardest, Pro }
+    public enum Difficulty { Easy, Medium, Hard, Hardest, Pro, SuperBattle }
+
     public static class DifficultySlides
     {
         public static GameSettings For(Difficulty e)
@@ -30,6 +31,8 @@ namespace MemoryBattle.Details
                     return new GameSettings(rows: 3, columns: 6, timer: 60, matchReward: 1, logo: "icons", cardWidth: cardWidth, cardHeight: cardHeight, spacing: spacing);
                 case Difficulty.Pro:
                     return new GameSettings(rows: 4, columns: 7, timer: 60, matchReward: 1, logo: "icons", cardWidth: cardWidth, cardHeight: cardHeight, spacing: spacing);
+                case Difficulty.SuperBattle:
+                    return new GameSettings(rows: 4, columns: 5, timer: 60, matchReward: 1, logo: "icons", cardWidth: cardWidth, cardHeight: cardHeight, spacing: spacing);
                 default:
                     return new GameSettings();
             }
