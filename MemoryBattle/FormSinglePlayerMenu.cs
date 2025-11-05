@@ -36,10 +36,17 @@ namespace MemoryBattle
 
         private void btnProgressive_Click(object s, EventArgs e)
         {
-            MessageBox.Show("Progressive Mode - Coming Soon!\n\nThis exciting feature is currently under development.\nStay tuned for future updates!",
-                "Progressive Mode",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            //MessageBox.Show("Progressive Mode - Coming Soon!\n\nThis exciting feature is currently under development.\nStay tuned for future updates!",
+            //    "Progressive Mode",
+            //    MessageBoxButtons.OK,
+            //    MessageBoxIcon.Information);
+
+            using (var prog = new FormProgressiveMode())
+            {
+                Hide();
+                prog.ShowDialog(this);
+                Show();
+            }
         }
 
         private void btnExit_Click(object s, EventArgs e) => Application.Exit();
