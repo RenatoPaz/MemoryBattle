@@ -35,11 +35,17 @@ namespace MemoryBattle
 
         private void btnBattleMode_Click(object sender, EventArgs e)
         {
-            using (var battleMenu = new FormBattleModeMenu())
+            //using (var battleMenu = new FormBattleModeMenu())
+            //{
+            //    Hide();
+            //    battleMenu.ShowDialog(this);
+            //    Show();
+            //}
+
+            //use form gamemode selection for player to choose between PvP or PvC
+            using (var modeSelection = new FormGameModeSelection())
             {
-                Hide();
-                battleMenu.ShowDialog(this);
-                Show();
+                if (modeSelection.ShowDialog(this) != DialogResult.OK) return;
             }
         }
 
