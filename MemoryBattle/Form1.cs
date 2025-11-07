@@ -30,7 +30,10 @@ namespace MemoryBattle
 
         private void btnScoreInfo_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Scores will be displayed here.");
+            using (var leaderboard = new FormLeaderboard())
+            {
+                leaderboard.ShowDialog(this);
+            }
         }
 
         private void btnBattleMode_Click(object sender, EventArgs e)
