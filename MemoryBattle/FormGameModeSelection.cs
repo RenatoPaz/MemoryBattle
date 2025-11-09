@@ -1,5 +1,7 @@
+using MemoryBattle.Details;
+using MemoryBattle.Properties;
 using System;
-using System.Drawing;
+using System.Runtime;
 using System.Windows.Forms;
 
 namespace MemoryBattle
@@ -36,11 +38,17 @@ namespace MemoryBattle
 
         private void btnPlayerVsAI_Click(object sender, EventArgs e)
         {
-            using (var menu = new FormBattleModeMenu())
+            using (var menu = new FormAIModeMenu())
             {
-                if (menu.ShowDialog(this) == DialogResult.OK)
+                if (menu.ShowDialog(this) != DialogResult.OK) return;
+
+                var settings = menu.SelectedSettings; 
+                var playerName = menu.PlayerName;        
+
+                using (var game = new FormAIGame(settings, playerName))
                 {
-                    this.DialogResult = DialogResult.OK;
+                    game.Text = $"Memory Battle - {playerName} vs AI ({menu.SelectedDifficulty})";
+                    game.ShowDialog(this);
                 }
             }
         }

@@ -14,7 +14,7 @@ namespace MemoryBattle
     public partial class FormBattleModeMenu : Form
     {
         public FormBattleModeMenu()
-        {
+        { 
             InitializeComponent();
         }
 

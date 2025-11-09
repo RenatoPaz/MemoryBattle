@@ -60,6 +60,18 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormAIGame.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAIGame.Designer.cs">
+      <DependentUpon>FormAIGame.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormAIModeMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAIModeMenu.Designer.cs">
+      <DependentUpon>FormAIModeMenu.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormBattleModeMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -112,6 +124,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAIModeMenu.resx">
+      <DependentUpon>FormAIModeMenu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormBattleModeMenu.resx">
       <DependentUpon>FormBattleModeMenu.cs</DependentUpon>
