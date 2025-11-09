@@ -19,6 +19,46 @@ namespace MemoryBattle
         public FormSinglePlayerMenu()
         {
             InitializeComponent();
+            ApplyColorScheme();
+            ColorSchemeManager.ColorSchemeChanged += OnColorSchemeChanged;
+        }
+
+        private void OnColorSchemeChanged(object sender, EventArgs e)
+        {
+            ApplyColorScheme();
+        }
+
+        private void ApplyColorScheme()
+        {
+            // Apply color scheme to all buttons and labels
+            foreach (Control control in this.Controls)
+            {
+                if (control is Button button)
+                {
+                    button.BackColor = ColorSchemeManager.ButtonBackground;
+                    button.ForeColor = ColorSchemeManager.ButtonForeground;
+                }
+                else if (control is Label label)
+                {
+                    label.ForeColor = ColorSchemeManager.LabelForeground;
+                }
+            }
+
+            // Handle background
+            if (ColorSchemeManager.IsColorBlindFriendly)
+            {
+                this.BackgroundImage = null;
+                this.BackColor = ColorSchemeManager.FormBackground;
+            }
+
+
+            this.Invalidate();
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            ColorSchemeManager.ColorSchemeChanged -= OnColorSchemeChanged;
+            base.OnFormClosed(e);
         }
 
         private void Choose(Difficulty d)

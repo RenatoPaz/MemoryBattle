@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColorSchemeManager.cs" />
     <Compile Include="Details\Board.cs" />
     <Compile Include="Details\Cards\CardManager.cs" />
     <Compile Include="Details\Cards\MemoryCard.cs" />

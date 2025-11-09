@@ -19,6 +19,7 @@ namespace MemoryBattle
         {
             InitializeComponent();
             _playerName = "Player";
+            IsSinglePlayerMode = false;
             InitializeAIGameUI();
         }
 
@@ -26,6 +27,7 @@ namespace MemoryBattle
         {
             InitializeComponent();
             _playerName = "Player";
+            IsSinglePlayerMode = false;
             InitializeAIGameUI();
         }
 
@@ -33,6 +35,7 @@ namespace MemoryBattle
         {
             InitializeComponent();
             _playerName = string.IsNullOrWhiteSpace(playerName) ? "Player" : playerName;
+            IsSinglePlayerMode = false;
             InitializeAIGameUI();
         }
 

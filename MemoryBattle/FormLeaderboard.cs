@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using MemoryBattle.Details;
 
 // add > references > system.windows.forms.datavisualization.charting is a library that for charting and graphing controls.
 // referenced: https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.datavisualization.charting?view=netframework-4.8.1
@@ -14,7 +15,71 @@ namespace MemoryBattle
         {
             InitializeComponent();
             InitializeListViewColumns();
+            ApplyColorScheme();
             LoadMockData();
+            ColorSchemeManager.ColorSchemeChanged += OnColorSchemeChanged;
+        }
+
+        private void OnColorSchemeChanged(object sender, EventArgs e)
+        {
+            ApplyColorScheme();
+            LoadMockData(); // Reload to apply new colors to chart
+        }
+
+        private void ApplyColorScheme()
+        {
+            // Apply color scheme to all controls
+            foreach (Control control in this.Controls)
+            {
+                if (control is Button button)
+                {
+                    button.BackColor = ColorSchemeManager.ButtonBackground;
+                    button.ForeColor = ColorSchemeManager.ButtonForeground;
+                }
+                else if (control is Label label)
+                {
+                    label.ForeColor = ColorSchemeManager.LabelForeground;
+                }
+                else if (control is ListView listView)
+                {
+                    listView.BackColor = ColorSchemeManager.IsColorBlindFriendly ?
+                        ColorSchemeManager.CardRevealed : Color.White;
+                    listView.ForeColor = Color.Black;
+                }
+            }
+
+            // Handle chart colors
+            if (chartScores != null)
+            {
+                chartScores.BackColor = ColorSchemeManager.IsColorBlindFriendly ?
+                    ColorSchemeManager.FormBackground : Color.White;
+
+                // Update chart area background
+                if (chartScores.ChartAreas.Count > 0)
+                {
+                    chartScores.ChartAreas[0].BackColor = ColorSchemeManager.IsColorBlindFriendly ?
+                        ColorSchemeManager.FormBackground : Color.White;
+                }
+            }
+
+            // Handle background
+            if (ColorSchemeManager.IsColorBlindFriendly)
+            {
+                this.BackgroundImage = null;
+                this.BackColor = ColorSchemeManager.FormBackground;
+            }
+            else
+            {
+
+            }
+
+            this.Invalidate();
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            ColorSchemeManager.ColorSchemeChanged -= OnColorSchemeChanged;
+            base.OnFormClosed(e);
         }
 
         private void InitializeListViewColumns()
@@ -43,15 +108,36 @@ namespace MemoryBattle
                 new { Player = "Eve", Score = 1200 }
             };
 
-            // this is for the bars in the graph, each bar is color coordinated.
-            Color[] barColors = new Color[]
+            // Color-blind friendly chart colors
+            Color[] barColors;
+            Color[] legendColors;
+
+            if (ColorSchemeManager.IsColorBlindFriendly)
             {
-                Color.Gold,
-                Color.Silver,
-                Color.SandyBrown,
-                Color.CornflowerBlue,
-                Color.MediumPurple
-            };
+                // Use patterns and high contrast colors safe for color-blind users
+                barColors = new Color[]
+                {
+                    Color.FromArgb(0, 0, 139),      // Dark Blue (1st)
+                    Color.FromArgb(25, 25, 112),    // Midnight Blue (2nd)  
+                    Color.FromArgb(70, 130, 180),   // Steel Blue (3rd)
+                    Color.FromArgb(105, 105, 105),  // Dim Gray (4th)
+                    Color.FromArgb(169, 169, 169)   // Dark Gray (5th)
+                };
+                legendColors = barColors;
+            }
+            else
+            {
+                // Original colors for regular mode
+                barColors = new Color[]
+                {
+                    Color.Gold,
+                    Color.Silver,
+                    Color.SandyBrown,
+                    Color.CornflowerBlue,
+                    Color.MediumPurple
+                };
+                legendColors = barColors;
+            }
 
             // populate ListView with rank, player name, and score data
             listViewScores.Items.Clear();
@@ -83,39 +169,26 @@ namespace MemoryBattle
             Legend customLegend = new Legend("RankLegend");
             customLegend.Title = "Rank Colors";
             customLegend.TitleFont = new Font("Arial", 10, FontStyle.Bold);
+            customLegend.TitleForeColor = ColorSchemeManager.LabelForeground;
+            customLegend.ForeColor = ColorSchemeManager.LabelForeground;
+            customLegend.BackColor = ColorSchemeManager.IsColorBlindFriendly ?
+                ColorSchemeManager.FormBackground : Color.Transparent;
             customLegend.Docking = Docking.Right;
 
-            // color coordinated 1st place to 5th, can adjust if only 3 places are used.
-            customLegend.CustomItems.Add(new LegendItem()
+            // Legend items with appropriate labels for color-blind mode
+            string[] rankLabels = ColorSchemeManager.IsColorBlindFriendly ?
+                new[] { "1st Place (Dark Blue)", "2nd Place (Mid Blue)", "3rd Place (Steel Blue)", "4th Place (Dark Gray)", "5th Place (Light Gray)" } :
+                new[] { "1st Place", "2nd Place", "3rd Place", "4th Place", "5th Place" };
+
+            for (int i = 0; i < legendColors.Length; i++)
             {
-                Name = "1st Place",
-                Color = Color.Gold,
-                ImageStyle = LegendImageStyle.Rectangle
-            });
-            customLegend.CustomItems.Add(new LegendItem()
-            {
-                Name = "2nd Place",
-                Color = Color.Silver,
-                ImageStyle = LegendImageStyle.Rectangle
-            });
-            customLegend.CustomItems.Add(new LegendItem()
-            {
-                Name = "3rd Place",
-                Color = Color.SandyBrown,
-                ImageStyle = LegendImageStyle.Rectangle
-            });
-            customLegend.CustomItems.Add(new LegendItem()
-            {
-                Name = "4th Place",
-                Color = Color.CornflowerBlue,
-                ImageStyle = LegendImageStyle.Rectangle
-            });
-            customLegend.CustomItems.Add(new LegendItem()
-            {
-                Name = "5th Place",
-                Color = Color.MediumPurple,
-                ImageStyle = LegendImageStyle.Rectangle
-            });
+                customLegend.CustomItems.Add(new LegendItem()
+                {
+                    Name = rankLabels[i],
+                    Color = legendColors[i],
+                    ImageStyle = LegendImageStyle.Rectangle
+                });
+            }
 
             // this adds the custom legend to the chart
             chartScores.Legends.Add(customLegend);

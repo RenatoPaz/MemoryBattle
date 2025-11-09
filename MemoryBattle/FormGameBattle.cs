@@ -55,11 +55,62 @@ namespace MemoryBattle
             InitializePlayerLabels();
             UpdateCurrentPlayerDisplay();
             InitializeGame();
+            ApplyColorScheme();
+            ColorSchemeManager.ColorSchemeChanged += OnColorSchemeChanged;
 
             if (_isSuperBattle && _initialTime > 0)
             {
                 StartGameTimer();
             }
+        }
+
+        private void OnColorSchemeChanged(object sender, EventArgs e)
+        {
+            ApplyColorScheme();
+            UpdateCurrentPlayerDisplay(); // Refresh player labels
+        }
+
+        private void ApplyColorScheme()
+        {
+            if (ColorSchemeManager.IsColorBlindFriendly)
+            {
+                this.BackgroundImage = null;
+                this.BackColor = ColorSchemeManager.FormBackground;
+            }
+            else
+            {
+
+            }
+
+            // Refresh all card colors
+            if (_memoryCards != null)
+            {
+                foreach (var card in _memoryCards)
+                {
+                    card.RefreshColors();
+                }
+            }
+
+            // Update label colors
+            if (lblTimer != null)
+            {
+                lblTimer.BackColor = ColorSchemeManager.TimerBackground;
+                lblTimer.ForeColor = ColorSchemeManager.IsColorBlindFriendly ? Color.White : Color.Black;
+            }
+
+            if (lblCurrentPlayer != null)
+            {
+                lblCurrentPlayer.BackColor = ColorSchemeManager.CurrentPlayerBackground;
+                lblCurrentPlayer.ForeColor = ColorSchemeManager.IsColorBlindFriendly ? Color.White : Color.Black;
+            }
+
+            this.Invalidate();
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            ColorSchemeManager.ColorSchemeChanged -= OnColorSchemeChanged;
+            base.OnFormClosed(e);
         }
 
         private void ShowTimerSelection()
@@ -138,7 +189,8 @@ namespace MemoryBattle
                 int minutes = _timeRemaining / 60;
                 int seconds = _timeRemaining % 60;
                 lblTimer.Text = $"Time: {minutes:D2}:{seconds:D2}";
-                lblTimer.ForeColor = _timeRemaining <= 10 ? Color.Red : Color.Black;
+                lblTimer.ForeColor = _timeRemaining <= 10 ? Color.Red :
+                    (ColorSchemeManager.IsColorBlindFriendly ? Color.White : Color.Black);
             }
         }
 
@@ -421,6 +473,7 @@ namespace MemoryBattle
                 UpdateTimerDisplay();
 
             CreateCards();
+            ApplyColorScheme();
 
             if (_isSuperBattle)
                 StartGameTimer();
@@ -433,8 +486,8 @@ namespace MemoryBattle
                 lblTimer = new Label
                 {
                     Font = new Font("Cascadia Code", 14F, FontStyle.Bold),
-                    BackColor = Color.FromArgb(200, Color.Yellow),
-                    ForeColor = Color.Black,
+                    BackColor = ColorSchemeManager.TimerBackground,
+                    ForeColor = ColorSchemeManager.IsColorBlindFriendly ? Color.White : Color.Black,
                     AutoSize = true,
                     Location = new Point(this.ClientSize.Width - 150, 20)
                 };
@@ -445,7 +498,8 @@ namespace MemoryBattle
             lblCurrentPlayer = new Label
             {
                 Font = new Font("Cascadia Code", 12F, FontStyle.Bold),
-                BackColor = Color.FromArgb(200, Color.White),
+                BackColor = ColorSchemeManager.CurrentPlayerBackground,
+                ForeColor = ColorSchemeManager.IsColorBlindFriendly ? Color.White : Color.Black,
                 AutoSize = true,
                 Location = new Point(20, 20)
             };
@@ -454,7 +508,8 @@ namespace MemoryBattle
             lblPlayer1 = new Label
             {
                 Font = new Font("Cascadia Code", 10F),
-                BackColor = Color.FromArgb(200, Color.LightBlue),
+                BackColor = ColorSchemeManager.Player1Inactive,
+                ForeColor = ColorSchemeManager.IsColorBlindFriendly ? Color.White : Color.Black,
                 AutoSize = true,
                 Location = new Point(20, 60)
             };
@@ -463,7 +518,8 @@ namespace MemoryBattle
             lblPlayer2 = new Label
             {
                 Font = new Font("Cascadia Code", 10F),
-                BackColor = Color.FromArgb(200, Color.LightCoral),
+                BackColor = ColorSchemeManager.Player2Inactive,
+                ForeColor = ColorSchemeManager.IsColorBlindFriendly ? Color.White : Color.Black,
                 AutoSize = true,
                 Location = new Point(20, 90)
             };
@@ -478,8 +534,12 @@ namespace MemoryBattle
             lblPlayer1.Text = $"{player1Name}: {player1Score} pairs";
             lblPlayer2.Text = $"{player2Name}: {player2Score} pairs";
 
-            lblPlayer1.BackColor = currentPlayer == 1 ? Color.FromArgb(200, Color.LightGreen) : Color.FromArgb(200, Color.LightBlue);
-            lblPlayer2.BackColor = currentPlayer == 2 ? Color.FromArgb(200, Color.LightGreen) : Color.FromArgb(200, Color.LightCoral);
+            lblPlayer1.BackColor = currentPlayer == 1 ? ColorSchemeManager.Player1Active : ColorSchemeManager.Player1Inactive;
+            lblPlayer2.BackColor = currentPlayer == 2 ? ColorSchemeManager.Player2Active : ColorSchemeManager.Player2Inactive;
+
+            // Update text colors for color-blind mode
+            lblPlayer1.ForeColor = ColorSchemeManager.IsColorBlindFriendly ? Color.White : Color.Black;
+            lblPlayer2.ForeColor = ColorSchemeManager.IsColorBlindFriendly ? Color.White : Color.Black;
         }
 
         private void SwitchPlayer()

@@ -14,8 +14,56 @@ namespace MemoryBattle
     public partial class FormBattleModeMenu : Form
     {
         public FormBattleModeMenu()
-        { 
+        {
             InitializeComponent();
+            ApplyColorScheme();
+            ColorSchemeManager.ColorSchemeChanged += OnColorSchemeChanged;
+        }
+
+        private void OnColorSchemeChanged(object sender, EventArgs e)
+        {
+            ApplyColorScheme();
+        }
+
+        private void ApplyColorScheme()
+        {
+            // Apply color scheme to all buttons, labels, and text boxes
+            foreach (Control control in this.Controls)
+            {
+                if (control is Button button)
+                {
+                    button.BackColor = ColorSchemeManager.ButtonBackground;
+                    button.ForeColor = ColorSchemeManager.ButtonForeground;
+                }
+                else if (control is Label label)
+                {
+                    label.ForeColor = ColorSchemeManager.LabelForeground;
+                }
+                else if (control is TextBox textBox)
+                {
+                    textBox.BackColor = ColorSchemeManager.ButtonBackground;
+                    textBox.ForeColor = ColorSchemeManager.ButtonForeground;
+                }
+            }
+
+            // Handle background
+            if (ColorSchemeManager.IsColorBlindFriendly)
+            {
+                this.BackgroundImage = null;
+                this.BackColor = ColorSchemeManager.FormBackground;
+            }
+            else
+            {
+
+            }
+
+            this.Invalidate();
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            ColorSchemeManager.ColorSchemeChanged -= OnColorSchemeChanged;
+            base.OnFormClosed(e);
         }
 
         private void btnMedium_Click(object sender, EventArgs e)

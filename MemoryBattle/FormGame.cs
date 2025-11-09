@@ -26,6 +26,9 @@ namespace MemoryBattle
         private enum Turn { Player, AI }
         private Turn _turn = Turn.Player;
 
+        // NEW: flag to indicate if this is pure single-player mode (no AI)
+        protected bool IsSinglePlayerMode = true;
+
         public FormGame(GameSettings settings)
         {
             InitializeComponent();
@@ -35,6 +38,49 @@ namespace MemoryBattle
             _cardManager = new CardManager(settings);
 
             InitializeGame();
+            ApplyColorScheme();
+            ColorSchemeManager.ColorSchemeChanged += OnColorSchemeChanged;
+        }
+
+        private void OnColorSchemeChanged(object sender, EventArgs e)
+        {
+            ApplyColorScheme();
+        }
+
+        private void ApplyColorScheme()
+        {
+            // Handle background - only remove background image for color-blind mode
+            if (ColorSchemeManager.IsColorBlindFriendly)
+            {
+                this.BackgroundImage = null;
+                this.BackColor = ColorSchemeManager.FormBackground;
+                // Hide decorative picture boxes
+                if (pictureBox1 != null) pictureBox1.Visible = false;
+                if (pictureBox2 != null) pictureBox2.Visible = false;
+            }
+            else
+            {
+                // Show decorative picture boxes
+                if (pictureBox1 != null) pictureBox1.Visible = true;
+                if (pictureBox2 != null) pictureBox2.Visible = true;
+            }
+
+            // Refresh all card colors
+            if (_memoryCards != null)
+            {
+                foreach (var card in _memoryCards)
+                {
+                    card.RefreshColors();
+                }
+            }
+
+            this.Invalidate();
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            ColorSchemeManager.ColorSchemeChanged -= OnColorSchemeChanged;
+            base.OnFormClosed(e);
         }
 
         private Difficulty GetDifficultyFromSettings(GameSettings settings)
@@ -72,8 +118,8 @@ namespace MemoryBattle
                 card.CardButton.BringToFront();
             }
 
-            pictureBox1.SendToBack();
-            pictureBox2.SendToBack();
+            if (pictureBox1 != null) pictureBox1.SendToBack();
+            if (pictureBox2 != null) pictureBox2.SendToBack();
         }
 
         // --- NEW: helper to enable/disable human input ---
@@ -104,6 +150,11 @@ namespace MemoryBattle
         protected virtual void StartAITurn()
         {
             // Base game: no AI, do nothing.
+            // In single-player mode, immediately return to player turn
+            if (IsSinglePlayerMode)
+            {
+                BeginPlayerTurn();
+            }
         }
 
         // routing Button.Click into a virtual, testable handler that receives the MemoryCard.
@@ -185,12 +236,22 @@ namespace MemoryBattle
             _secondCard = null;
             _isChecking = false;
 
+            // FIXED: Handle turn transitions properly for single-player vs AI modes
             if (!GameOver)
             {
-                if (wasAITurn)
+                if (IsSinglePlayerMode)
+                {
+                    // In single-player mode, always stay on player turn
                     BeginPlayerTurn();
+                }
                 else
-                    BeginAITurn();
+                {
+                    // In AI mode, switch between player and AI turns
+                    if (wasAITurn)
+                        BeginPlayerTurn();
+                    else
+                        BeginAITurn();
+                }
             }
         }
 

@@ -24,11 +24,19 @@ namespace MemoryBattle.Details.Cards
                 Size = cardSize,
                 Location = position,
                 Font = new Font("Arial", fontSize, FontStyle.Bold),
-                BackColor = Color.LightBlue,
-                Text = "?",
+                BackColor = ColorSchemeManager.CardHidden,
+                ForeColor = ColorSchemeManager.IsColorBlindFriendly ? Color.White : Color.Black,
+                Text = ColorSchemeManager.IsColorBlindFriendly ? "■" : "?", // Use solid square for color-blind mode
                 Tag = index,
-                UseVisualStyleBackColor = false
+                UseVisualStyleBackColor = false,
+                FlatStyle = ColorSchemeManager.IsColorBlindFriendly ? FlatStyle.Flat : FlatStyle.Standard
             };
+
+            if (ColorSchemeManager.IsColorBlindFriendly)
+            {
+                CardButton.FlatAppearance.BorderSize = 2;
+                CardButton.FlatAppearance.BorderColor = Color.Black;
+            }
         }
 
         public void Reveal()
@@ -37,7 +45,14 @@ namespace MemoryBattle.Details.Cards
             {
                 IsRevealed = true;
                 CardButton.Text = Value;
-                CardButton.BackColor = Color.White;
+                CardButton.BackColor = ColorSchemeManager.CardRevealed;
+                CardButton.ForeColor = Color.Black;
+
+                if (ColorSchemeManager.IsColorBlindFriendly)
+                {
+                    CardButton.FlatAppearance.BorderColor = Color.DarkBlue;
+                    CardButton.FlatAppearance.BorderSize = 3;
+                }
             }
         }
 
@@ -46,8 +61,15 @@ namespace MemoryBattle.Details.Cards
             if (!IsMatched)
             {
                 IsRevealed = false;
-                CardButton.Text = "?";
-                CardButton.BackColor = Color.LightBlue;
+                CardButton.Text = ColorSchemeManager.IsColorBlindFriendly ? "■" : "?";
+                CardButton.BackColor = ColorSchemeManager.CardHidden;
+                CardButton.ForeColor = ColorSchemeManager.IsColorBlindFriendly ? Color.White : Color.Black;
+
+                if (ColorSchemeManager.IsColorBlindFriendly)
+                {
+                    CardButton.FlatAppearance.BorderColor = Color.Black;
+                    CardButton.FlatAppearance.BorderSize = 2;
+                }
             }
         }
 
@@ -56,8 +78,17 @@ namespace MemoryBattle.Details.Cards
             IsMatched = true;
             IsRevealed = true;
             CardButton.Enabled = false;
-            CardButton.BackColor = Color.LightGreen;
+            CardButton.BackColor = ColorSchemeManager.CardMatched;
+            CardButton.ForeColor = ColorSchemeManager.IsColorBlindFriendly ? Color.White : Color.Black;
             CardButton.Text = Value;
+
+            if (ColorSchemeManager.IsColorBlindFriendly)
+            {
+                CardButton.FlatAppearance.BorderColor = Color.DarkGreen;
+                CardButton.FlatAppearance.BorderSize = 4;
+                // Add visual indicator for matched cards
+                CardButton.Text = "✓ " + Value;
+            }
         }
 
         public void Reset()
@@ -65,8 +96,58 @@ namespace MemoryBattle.Details.Cards
             IsMatched = false;
             IsRevealed = false;
             CardButton.Enabled = true;
-            CardButton.BackColor = Color.LightBlue;
-            CardButton.Text = "?";
+            CardButton.BackColor = ColorSchemeManager.CardHidden;
+            CardButton.ForeColor = ColorSchemeManager.IsColorBlindFriendly ? Color.White : Color.Black;
+            CardButton.Text = ColorSchemeManager.IsColorBlindFriendly ? "■" : "?";
+
+            if (ColorSchemeManager.IsColorBlindFriendly)
+            {
+                CardButton.FlatAppearance.BorderColor = Color.Black;
+                CardButton.FlatAppearance.BorderSize = 2;
+            }
+        }
+
+        public void RefreshColors()
+        {
+            CardButton.FlatStyle = ColorSchemeManager.IsColorBlindFriendly ? FlatStyle.Flat : FlatStyle.Standard;
+
+            if (IsMatched)
+            {
+                CardButton.BackColor = ColorSchemeManager.CardMatched;
+                CardButton.ForeColor = ColorSchemeManager.IsColorBlindFriendly ? Color.White : Color.Black;
+                if (ColorSchemeManager.IsColorBlindFriendly)
+                {
+                    CardButton.FlatAppearance.BorderColor = Color.DarkGreen;
+                    CardButton.FlatAppearance.BorderSize = 4;
+                    if (!CardButton.Text.StartsWith("✓"))
+                        CardButton.Text = "✓ " + Value;
+                }
+                else
+                {
+                    CardButton.Text = Value;
+                }
+            }
+            else if (IsRevealed)
+            {
+                CardButton.BackColor = ColorSchemeManager.CardRevealed;
+                CardButton.ForeColor = Color.Black;
+                if (ColorSchemeManager.IsColorBlindFriendly)
+                {
+                    CardButton.FlatAppearance.BorderColor = Color.DarkBlue;
+                    CardButton.FlatAppearance.BorderSize = 3;
+                }
+            }
+            else
+            {
+                CardButton.BackColor = ColorSchemeManager.CardHidden;
+                CardButton.ForeColor = ColorSchemeManager.IsColorBlindFriendly ? Color.White : Color.Black;
+                CardButton.Text = ColorSchemeManager.IsColorBlindFriendly ? "■" : "?";
+                if (ColorSchemeManager.IsColorBlindFriendly)
+                {
+                    CardButton.FlatAppearance.BorderColor = Color.Black;
+                    CardButton.FlatAppearance.BorderSize = 2;
+                }
+            }
         }
     }
 }
