@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Drawing;
+using System.Media;
 using System.Windows.Forms;
-using MemoryBattle.Details; 
+using MemoryBattle.Details;
 
 namespace MemoryBattle
 {
@@ -20,68 +21,97 @@ namespace MemoryBattle
         private int _lives;
         private readonly int _totalLevels = _order.Length;
 
+        // UI Controls (hidden by default; shown only on finish)
         private Label _lblTitle;
         private Label _lblStatus;
         private ProgressBar _progress;
-        private Button _btnPlay;
+        private Button _btnRestart;
         private Button _btnExit;
 
         public FormProgressiveMode(int startingLives = 3)
         {
-            InitializeComponent(); 
+            InitializeComponent();
 
             _lives = Math.Max(1, startingLives);
 
+            // Form setup (minimal, like FormGame)
             Text = "Memory Battle - Progressive Mode";
             Size = new Size(800, 600);
             StartPosition = FormStartPosition.CenterScreen;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
+            BackColor = Color.LightBlue;  // Match FormGame theme
 
+            // UI Controls (initially hidden)
             _lblTitle = new Label
             {
                 Text = "🧠 Progressive Mode",
-                Font = new Font("Segoe UI", 22, FontStyle.Bold),
+                Font = new Font("Segoe UI", 24, FontStyle.Bold),
+                ForeColor = Color.DarkBlue,
                 AutoSize = false,
                 TextAlign = ContentAlignment.MiddleCenter,
                 Dock = DockStyle.Top,
-                Height = 80
+                Height = 100,
+                BackColor = Color.Transparent,
+                Visible = false
             };
 
             _lblStatus = new Label
             {
                 Text = "",
-                Font = new Font("Segoe UI", 12),
+                Font = new Font("Segoe UI", 14),
+                ForeColor = Color.Black,
                 AutoSize = false,
                 TextAlign = ContentAlignment.MiddleCenter,
                 Dock = DockStyle.Top,
-                Height = 60
+                Height = 80,
+                BackColor = Color.Transparent,
+                Visible = false
             };
 
             _progress = new ProgressBar
             {
                 Dock = DockStyle.Top,
-                Height = 24,
+                Height = 30,
                 Minimum = 0,
                 Maximum = _totalLevels,
-                Value = 0
+                Value = 0,
+                Style = ProgressBarStyle.Continuous,
+                ForeColor = Color.Green,
+                Visible = false
             };
 
             var panelButtons = new FlowLayoutPanel
             {
                 Dock = DockStyle.Bottom,
-                Height = 80,
+                Height = 100,
                 FlowDirection = FlowDirection.RightToLeft,
-                Padding = new Padding(16)
+                Padding = new Padding(20),
+                BackColor = Color.Transparent,
+                Visible = false
             };
 
-            _btnPlay = new Button { Text = "Play", AutoSize = true };
-            _btnPlay.Click += BtnPlay_Click;
+            _btnRestart = new Button
+            {
+                Text = "Restart",
+                Font = new Font("Segoe UI", 12),
+                Size = new Size(120, 40),
+                BackColor = Color.Orange,
+                FlatStyle = FlatStyle.Flat
+            };
+            _btnRestart.Click += (s, e) => { ResetGame(); StartProgressivePlay(); };
 
-            _btnExit = new Button { Text = "Exit", AutoSize = true };
+            _btnExit = new Button
+            {
+                Text = "Exit",
+                Font = new Font("Segoe UI", 12),
+                Size = new Size(120, 40),
+                BackColor = Color.LightCoral,
+                FlatStyle = FlatStyle.Flat
+            };
             _btnExit.Click += (s, e) => Close();
 
-            panelButtons.Controls.Add(_btnPlay);
+            panelButtons.Controls.Add(_btnRestart);
             panelButtons.Controls.Add(_btnExit);
 
             Controls.Add(panelButtons);
@@ -89,42 +119,30 @@ namespace MemoryBattle
             Controls.Add(_lblStatus);
             Controls.Add(_lblTitle);
 
-            UpdateStatus();
+            // Auto-start the progressive play (like FormGame opens directly)
+            StartProgressivePlay();
         }
 
-        private void BtnPlay_Click(object sender, EventArgs e)
+        private void StartProgressivePlay()
         {
-            if (IsFinished())
+            while (!IsFinished())
             {
-                Close();
-                return;
+                var outcome = PlayCurrentLevel();
+                if (outcome == LevelOutcome.Completed)
+                {
+                    _currentIndex++;
+                    _progress.Value = Math.Min(_currentIndex, _totalLevels);
+                    SystemSounds.Beep.Play();  // Optional feedback
+                }
+                else if (outcome == LevelOutcome.Aborted)
+                {
+                    _lives = Math.Max(0, _lives - 1);
+                }
+                // No retry loop here; assume FormGame handles retries internally
             }
 
-            _btnPlay.Enabled = false;
-
-            var outcome = PlayCurrentLevel();
-
-            if (outcome == LevelOutcome.Completed)
-                _progress.Value = Math.Min(_currentIndex, _totalLevels);
-
-            UpdateStatus();
-
-            if (IsFinished())
-            {
-                if (_lives > 0 && _currentIndex >= _totalLevels)
-                {
-                    MessageBox.Show("Congratulations! You have completed all stages!", "Progressive Mode",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-
-                }
-
-                _btnPlay.Text = "Close";
-            }
-
-            _btnPlay.Enabled = true;
+            // Game finished: Show end screen
+            ShowEndScreen();
         }
 
         private enum LevelOutcome { Completed, RetryRequested, Aborted }
@@ -132,7 +150,6 @@ namespace MemoryBattle
         private LevelOutcome PlayCurrentLevel()
         {
             var level = CurrentLevel();
-
             var settings = DifficultySlides.For(level);
             using (var game = new FormGame(settings))
             {
@@ -140,18 +157,45 @@ namespace MemoryBattle
 
                 if (dr == DialogResult.Retry)
                 {
-                    return LevelOutcome.RetryRequested;
+                    // Retry the same level (loop back)
+                    return PlayCurrentLevel();
                 }
-
                 if (dr == DialogResult.OK)
                 {
-                    _currentIndex++;
                     return LevelOutcome.Completed;
                 }
-
-                _lives = Math.Max(0, _lives - 1);
                 return LevelOutcome.Aborted;
             }
+        }
+
+        private void ShowEndScreen()
+        {
+            // Reveal UI for end screen
+            _lblTitle.Visible = true;
+            _lblStatus.Visible = true;
+            _progress.Visible = true;
+
+
+            if (_lives > 0 && _currentIndex >= _totalLevels)
+            {
+                _lblStatus.Text = "Congratulations! All levels completed!";
+            }
+            else
+            {
+                _lblStatus.Text = "Game Over! No lives left.";
+            }
+        }
+
+        private void ResetGame()
+        {
+            _currentIndex = 0;
+            _lives = 3;  // Or pass as param
+            _progress.Value = 0;
+            // Hide UI again
+            _lblTitle.Visible = false;
+            _lblStatus.Visible = false;
+            _progress.Visible = false;
+            Controls.Find("panelButtons", true)[0].Visible = false;
         }
 
         private Difficulty CurrentLevel()
@@ -163,20 +207,6 @@ namespace MemoryBattle
         private bool IsFinished()
         {
             return _currentIndex >= _totalLevels || _lives <= 0;
-        }
-
-        private void UpdateStatus()
-        {
-            if (IsFinished())
-            {
-                _lblStatus.Text = "Concluído!";
-                return;
-            }
-
-            var level = CurrentLevel();
-            _lblStatus.Text =
-                $"Level: {level}  •  Progresso: {_currentIndex}/{_totalLevels}  •  Vidas: {_lives}";
-            _btnPlay.Text = $"Play {level}";
         }
     }
 }
